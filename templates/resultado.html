@@ -1,0 +1,58 @@
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>PrevisIA - Resultado</title>
+      <style>
+          body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; background: #f5f5f5; }
+          main { background: white; padding: 20px; border-radius: 8px; text-align: center; }
+          .score { font-size: 3em; font-weight: bold; color: #007bff; }
+          .url { word-break: break-all; }
+          .guia { text-align: left; margin: 20px 0; padding: 10px; background: #e9ecef; border-radius: 4px; }
+          button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px; }
+      </style>
+  </head>
+  <body>
+      <main role="main">
+          <h1>Resultado</h1>
+          <p class="url">URL: <strong>{{ url }}</strong></p>
+          
+          {% if erro %}
+              <div role="alert" aria-live="assertive">
+                  <h2>Erro</h2>
+                  <p>{{ erro }}</p>
+              </div>
+          {% else %}
+              <div id="resultado-texto" role="region" aria-live="assertive">
+                  <p>Pontuação prevista:</p>
+                  <p class="score" aria-label="Pontuação {{ previsao }} de 100">{{ previsao }}</p>
+              </div>
+              <div class="guia" aria-label="Guia de Navegação Preditivo">
+                  <h2>Guia de Navegação Preditivo</h2>
+                  <p>{{ guia }}</p>
+              </div>
+              <h2>Impactos Principais:</h2>
+              <ul>
+                  {% for key, value in impactos %}
+                      <li>{{ key.replace('_', ' ')|title }}: {{ (value * 100)|round(2) }}%</li>
+                  {% endfor %}
+              </ul>
+              <button id="play-audio" aria-label="Ouvir resultado">Ouvir Resultado</button>
+          {% endif %}
+          <a href="/" aria-label="Nova análise">Nova Análise</a>
+      </main>
+
+      <script>
+          // SpeechSynthesis: Áudio nativo.
+          // Por quê? Fornece feedback de voz sob demanda, acessível sem dependências extras.
+          // Como? Botão ativa a fala manualmente com addEventListener (escuta clique).
+          document.getElementById('play-audio').addEventListener('click', function() {
+              var texto = "{{ texto_audio }}";  // Texto do servidor (inclui guia).
+              var utterance = new SpeechSynthesisUtterance(texto);  // Objeto de fala.
+              utterance.lang = 'pt-BR';  // Idioma.
+              speechSynthesis.speak(utterance);  // Reproduz.
+          });
+      </script>
+  </body>
+  </html>
