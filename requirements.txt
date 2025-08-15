@@ -1,0 +1,29 @@
+        # Dependências Principais (para a lógica central da aplicação)
+# Flask: Micro-framework web para a construção da interface.
+Flask
+# pandas: Biblioteca para manipulação e análise de dados tabulares (CSV, DataFrames).
+pandas
+# requests: Para fazer requisições HTTP (baixar conteúdo de URLs).
+requests
+# beautifulsoup4: Para fazer o parse (análise) de HTML e XML.
+beautifulsoup4
+# selenium: Para automação de navegadores web (usado para análise dinâmica com JavaScript).
+selenium
+# webdriver-manager: Gerencia automaticamente os drivers dos navegadores para o Selenium.
+webdriver-manager
+# axe-selenium-python: Integra a ferramenta de auditoria de acessibilidade Axe-core com Selenium.
+axe-selenium-python
+# scikit-learn: Biblioteca de Machine Learning (usada para o modelo RandomForestRegressor e train_test_split).
+scikit-learn
+# joblib: Para serializar e desserializar objetos Python (salvar/carregar modelo e nomes de features).
+joblib
+
+# Dependências de Desenvolvimento e Teste
+# pytest: Framework de testes para Python.
+pytest
+# pytest-mock: Plugin para pytest que facilita a criação de mocks (objetos simulados) em testes.
+pytest-mock
+# pytest-cov: Plugin para pytest que mede a cobertura de código dos testes.
+pytest-cov
+# pytest-flask: Plugin para pytest que facilita o teste de aplicações Flask.
+pytest-flask
