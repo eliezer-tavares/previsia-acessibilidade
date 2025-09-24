@@ -1,58 +1,131 @@
-  <!DOCTYPE html>
-  <html lang="pt-BR">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>PrevisIA - Resultado</title>
-      <style>
-          body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; background: #f5f5f5; }
-          main { background: white; padding: 20px; border-radius: 8px; text-align: center; }
-          .score { font-size: 3em; font-weight: bold; color: #007bff; }
-          .url { word-break: break-all; }
-          .guia { text-align: left; margin: 20px 0; padding: 10px; background: #e9ecef; border-radius: 4px; }
-          button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px; }
-      </style>
-  </head>
-  <body>
-      <main role="main">
-          <h1>Resultado</h1>
-          <p class="url">URL: <strong>{{ url }}</strong></p>
-          
-          {% if erro %}
-              <div role="alert" aria-live="assertive">
-                  <h2>Erro</h2>
-                  <p>{{ erro }}</p>
-              </div>
-          {% else %}
-              <div id="resultado-texto" role="region" aria-live="assertive">
-                  <p>Pontuação prevista:</p>
-                  <p class="score" aria-label="Pontuação {{ previsao }} de 100">{{ previsao }}</p>
-              </div>
-              <div class="guia" aria-label="Guia de Navegação Preditivo">
-                  <h2>Guia de Navegação Preditivo</h2>
-                  <p>{{ guia }}</p>
-              </div>
-              <h2>Impactos Principais:</h2>
-              <ul>
-                  {% for key, value in impactos %}
-                      <li>{{ key.replace('_', ' ')|title }}: {{ (value * 100)|round(2) }}%</li>
-                  {% endfor %}
-              </ul>
-              <button id="play-audio" aria-label="Ouvir resultado">Ouvir Resultado</button>
-          {% endif %}
-          <a href="/" aria-label="Nova análise">Nova Análise</a>
-      </main>
+<!-- Univesp - Projeto Integrador IV - Engenharia de Computação - 2º Semestre 2025 -->
+<!-- Desenvolvido por: Eliezer Tavares de Oliveira (principal), Anderson Vianna Ferrari, Efrain Tobal Tavares, Lucas de Goes Vieira Junior -->
+<!-- EN: This template renders the analysis results. Why? To display accessibility score and guide accessibly. How? Uses HTML with ARIA and SpeechSynthesis. -->
+<!-- PT: Este template renderiza os resultados da análise. Por quê? Para exibir o escore de acessibilidade e guia de forma acessível. Como? Usa HTML com ARIA e SpeechSynthesis. -->
 
-      <script>
-          // SpeechSynthesis: Áudio nativo.
-          // Por quê? Fornece feedback de voz sob demanda, acessível sem dependências extras.
-          // Como? Botão ativa a fala manualmente com addEventListener (escuta clique).
-          document.getElementById('play-audio').addEventListener('click', function() {
-              var texto = "{{ texto_audio }}";  // Texto do servidor (inclui guia).
-              var utterance = new SpeechSynthesisUtterance(texto);  // Objeto de fala.
-              utterance.lang = 'pt-BR';  // Idioma.
-              speechSynthesis.speak(utterance);  // Reproduz.
-          });
-      </script>
-  </body>
-  </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevisIA - Resultado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background: #f5f5f5;
+        }
+
+        main {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0056b3;
+            margin: 20px 0;
+        }
+
+        .url {
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+
+        .guia {
+            text-align: left;
+            margin: 20px 0;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #0056b3; /* Ajustado para maior contraste */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:focus, a:focus {
+            outline: 2px solid #0056b3;
+            outline-offset: 2px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        ul {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .aviso {
+            color: orange;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <main aria-label="Resultados da análise de acessibilidade">
+        <h1>Resultado</h1>
+        <p class="url" id="url-description">URL: <strong>{{ url }}</strong></p>
+
+        {% if error %}
+        <div role="alert" aria-live="assertive">
+            <h2>Erro</h2>
+            <p>{{ error }}</p>
+        </div>
+        {% else %}
+        {% if aviso %}
+        <p class="aviso" role="status" aria-live="polite">{{ aviso }}</p>
+        {% endif %}
+        <div id="resultado-texto" role="region" aria-live="assertive" aria-describedby="url-description">
+            <h2>Pontuação prevista</h2>
+            <p class="score" aria-label="Pontuação {{ score }} de 100">{{ score }}</p>
+        </div>
+        <div class="guia" aria-label="Guia de Navegação Preditivo">
+            <h2>Guia de Navegação Preditivo</h2>
+            <p>{{ guia }}</p>
+        </div>
+        {% if features %}
+        <div aria-label="Impactos principais">
+            <h2>Impactos Principais</h2>
+            <ul>
+                {% for key, value in features.items() %}
+                {% if key != 'layout' %}
+                <li>{{ key.replace('_', ' ')|title }}: {{ (value * 100)|round(2) if key in ['pct_links_genericos'] else value }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <button id="play-audio" aria-label="Reproduzir resultado em áudio">Ouvir Resultado</button>
+        {% endif %}
+        <a href="/" aria-label="Realizar nova análise">Nova Análise</a>
+    </main>
+
+    <script>
+        document.getElementById('play-audio').addEventListener('click', function () {
+            var texto = {% if error %}"Erro: {{ error | safe }}."{% else %}{% if aviso %}"Aviso: {{ aviso | safe }}. "{% endif %}"Pontuação prevista: {{ score }}. Guia de navegação: {{ guia | safe }}.{% if features %} Impactos principais: {% for key, value in features.items() %}{% if key != 'layout' %}{{ key.replace('_', ' ')|title }}: {{ (value * 100)|round(2) if key in ['pct_links_genericos'] else value }}. {% endif %}{% endfor %}{% endif %}"{% endif %};
+            var utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'pt-BR';
+            speechSynthesis.speak(utterance);
+        });
+    </script>
+</body>
+</html>

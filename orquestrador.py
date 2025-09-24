@@ -1,67 +1,71 @@
-    # orquestrador.py
-    # -*- coding: utf-8 -*-
+# Univesp - Projeto Integrador IV - Engenharia de Computação - 2º Semestre 2025
+# Desenvolvido por: Eliezer Tavares de Oliveira (principal), Anderson Vianna Ferrari, Efrain Tobal Tavares, Lucas de Goes Vieira Junior
+# EN: This file orchestrates parallel URL analysis to generate the dataset. Why? To automate large-scale data collection efficiently. How? Uses threads and saves results to CSV.
+# PT: Este arquivo orquestra a análise paralela de URLs para gerar o dataset. Por quê? Para automatizar a coleta de dados em larga escala eficientemente. Como? Usa threads e salva resultados em CSV.
+
+import pandas as pd
+from collector import analisar_url_completa
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
+import os
+import json
+import logging
+
+# EN: Setup logging to track orchestration errors. Why? Facilitates debugging with NVDA, saving errors to file.
+# PT: Configura o logging para rastrear erros de orquestração. Por quê? Facilita depuração com NVDA, salvando erros em arquivo.
+logging.basicConfig(filename='erros_orquestrador.log', level=logging.ERROR, format='%(asctime)s - %(message)s')
+
+# EN: Constants for file paths and workers. Why? Centralizes configuration for easy maintenance.
+# PT: Constantes para caminhos de arquivos e workers. Por quê? Centraliza a configuração para fácil manutenção.
+ARQUIVO_URLS = 'data/tranco_top_1000.csv'
+ARQUIVO_DATASET = 'data/dataset_acessibilidade.csv'
+MAX_WORKERS = 3
+
+def gera_dataset(batch_size=200):
     """
-    Orquestra coleta para dataset.
-    Por quê? Automatiza loop sobre URLs para gerar dados em escala, criando CSV para ML. Isso é o "motor" do dataset.
-    Como? Lê CSV de URLs, chama análise em paralelo (para velocidade), salva com pandas (trata erros, pausas). Serializa layout como JSON para CSV flat.
-    Conceitos básicos: Paralelismo com threads (concorrent) roda tarefas simultâneas; with gerencia recursos automaticamente.
+    Generates accessibility dataset.
+    
+    :param batch_size: Number of URLs to process (default: 200).
+    
+    EN: Why? To process URLs in parallel and save features for ML. How? Reads URLs, schedules threads, and serializes layout as JSON.
+    PT: Por quê? Para processar URLs em paralelo e salvar features para ML. Como? Lê URLs, agenda threads e serializa layout como JSON.
     """
-  
-    # Importações.
-    import pandas as pd  # Para ler/salvar CSV (DataFrame: tabela em memória). Por quê? Eficiente para dados tabulares.
-    from collector import analisar_url_completa  # Função de análise (import modular).
-    from concurrent.futures import ThreadPoolExecutor, as_completed  # Para processamento paralelo (threads: executa simultâneo). Por quê? Reduz tempo de horas para minutos.
-    import time  # Para sleep (pausas). Por quê? Evita bans por requests rápidas.
-    import os  # Para makedirs (criar pastas).
-    import json  # Para dumps (serializar dict como string JSON). Por quê? CSV não suporta dicts aninhados.
-  
-    # Configurações: Arquivos fixos. Por quê? Centraliza paths para fácil mudança.
-    ARQUIVO_URLS = 'data/tranco_top_1000.csv'  # Entrada: lista de URLs.
-    ARQUIVO_DATASET = 'data/dataset_acessibilidade.csv'  # Saída: features + labels.
-    MAX_WORKERS = 10  # Número máximo de threads paralelas (ajuste conforme CPU; evita sobrecarga).
-  
-    def gera_dataset(batch_size=200):
-        """
-        Gera dataset.
-        Por quê? Batch_size permite testes parciais (ex: 200 para rapidez), depois escala para 1000.
-        Como? Lê URLs como lista, agenda threads com submit, processa completos com as_completed, append resultados, converte para DF, salva.
-        """
-        print("Iniciando coleta paralela...")  # Mensagem de progresso.
-        try:
-            urls = pd.read_csv(ARQUIVO_URLS, header=None)[0].tolist()  # Lê como lista (tolist converte série).
-        except FileNotFoundError as e:  # Except específico para arquivo ausente.
-            print(f"Erro: {e}. Rode prepare_urls.py.")
-            return  # Sai da função.
-  
-        dados = []  # Lista vazia para armazenar dicionários de resultados.
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:  # With: abre e fecha executor automaticamente.
-            futures = {executor.submit(analisar_url_completa, url): url for url in urls[:batch_size]}  # Dict: future -> url; submit agenda tarefa.
-            for i, future in enumerate(as_completed(futures)):  # Enumera completos (as_completed yields conforme terminam).
-                url = futures[future]  # Pega url da future.
-                print(f"Processando {i+1}/{batch_size}: {url}")  # Progresso acessível no terminal.
-                try:
-                    resultado = future.result()  # Pega output da thread (bloqueia se não pronto).
-                    if resultado:
-                        # Serializa layout dict como string JSON para CSV (flat).
-                        # Por quê? Pandas salva dicts como string; json.dumps converte.
-                        if 'layout' in resultado:
-                            resultado['layout_json'] = json.dumps(resultado['layout'])  # Dumps: dict para string.
-                            del resultado['layout']  # Remove dict original para evitar erro no DataFrame (não serializável direto).
-                        resultado['url'] = url  # Adiciona URL para rastreamento.
-                        dados.append(resultado)  # Append: adiciona ao final da lista.
-                except Exception as e:
-                    print(f"Erro em thread para {url}: {e}")
-                time.sleep(0.5)  # Pausa curta entre batches (evita ser bloqueado como bot).
-  
-        if dados:  # If verifica se coletou algo.
-            os.makedirs('data', exist_ok=True)  # Cria pasta se necessário.
-            df = pd.DataFrame(dados)  # Converte lista para DataFrame (tabela).
-            cols = ['url', 'label_score_acessibilidade'] + [c for c in df.columns if c not in ['url', 'label_score_acessibilidade']]  # Reorganiza colunas (list comprehension filtra).
-            df = df[cols]
-            df.to_csv(ARQUIVO_DATASET, index=False)  # Salva CSV (index=False: sem coluna extra).
-            print(f"Dataset salvo: {len(df)} linhas.")
-        else:
-            print("Nenhum dado coletado.")
-  
-    if __name__ == '__main__':
-        gera_dataset()  # Chama função (altere batch_size para 1000 quando pronto)
+    print("Iniciando coleta paralela...")
+    try:
+        urls = pd.read_csv(ARQUIVO_URLS, header=None)[0].tolist()
+    except FileNotFoundError as e:
+        logging.error(f"EN: File not found: {str(e)}. PT: Arquivo não encontrado: {str(e)}.")
+        print(f"Erro: {e}. Rode prepare_urls.py.")
+        return
+    
+    dados = []
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(analisar_url_completa, url): url for url in urls[:batch_size]}
+        for i, future in enumerate(as_completed(futures)):
+            url = futures[future]
+            print(f"Processando {i+1}/{batch_size}: {url}")
+            try:
+                resultado = future.result()
+                if resultado:
+                    if 'layout' in resultado:
+                        resultado['layout_json'] = json.dumps(resultado['layout'])
+                        del resultado['layout']
+                    resultado['url'] = url
+                    dados.append(resultado)
+            except Exception as e:
+                logging.error(f"EN: Error in thread for {url}: {str(e)}. PT: Erro em thread para {url}: {str(e)}.")
+                print(f"Erro em thread para {url}: {e}")
+            time.sleep(1)
+    
+    if dados:
+        os.makedirs('data', exist_ok=True)
+        df = pd.DataFrame(dados)
+        cols = ['url', 'label_score_acessibilidade'] + [c for c in df.columns if c not in ['url', 'label_score_acessibilidade']]
+        df = df[cols]
+        df.to_csv(ARQUIVO_DATASET, index=False)
+        print(f"Dataset salvo: {len(df)} linhas.")
+    else:
+        print("Nenhum dado coletado.")
+
+if __name__ == '__main__':
+    gera_dataset()

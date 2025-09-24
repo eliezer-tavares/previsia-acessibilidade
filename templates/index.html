@@ -1,34 +1,92 @@
-    <!DOCTYPE html>
-  <html lang="pt-BR">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>PrevisIA - Acessibilidade</title>
-      <style>
-          body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; background: #f5f5f5; }
-          main { background: white; padding: 20px; border-radius: 8px; }
-          label { font-weight: bold; display: block; margin-bottom: 10px; }
-          input[type="url"] { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
-          button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-          .opcoes { margin-bottom: 15px; }
-      </style>
-  </head>
-  <body>
-      <main role="main">
-          <h1>PrevisIA de Acessibilidade</h1>
-          <p>Insira uma URL para prever acessibilidade.</p>
-          <form action="/predict" method="post" aria-label="Formulário de análise">
-              <label for="url_input">URL:</label>
-              <input type="url" id="url_input" name="url" placeholder="ex: univesp.br" required aria-required="true">
-              <div class="opcoes">
-                  <label for="tipo_analise">Tipo de Análise:</label>
-                  <select id="tipo_analise" name="tipo_analise">
-                      <option value="rapida">Rápida (instantânea, menos precisa)</option>
-                      <option value="completa">Completa (lenta, mais precisa)</option>
-                  </select>
-              </div>
-              <button type="submit" aria-label="Analisar">Analisar</button>
-          </form>
-      </main>
-  </body>
-  </html>
+<!-- Univesp - Projeto Integrador IV - Engenharia de Computação - 2º Semestre 2025 -->
+<!-- Desenvolvido por: Eliezer Tavares de Oliveira (principal), Anderson Vianna Ferrari, Efrain Tobal Tavares, Lucas de Goes Vieira Junior -->
+<!-- EN: This template renders the web interface for URL input. Why? To provide an accessible form for users. How? Uses HTML with ARIA attributes. -->
+<!-- PT: Este template renderiza a interface web para entrada de URL. Por quê? Para fornecer um formulário acessível aos usuários. Como? Usa HTML com atributos ARIA. -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevisIA - Acessibilidade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background: #f5f5f5;
+        }
+
+        main {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        button {
+            background: #0056b3; /* Ajustado para maior contraste */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:focus,
+        input:focus,
+        select:focus {
+            outline: 2px solid #0056b3;
+            outline-offset: 2px;
+        }
+
+        .opcoes {
+            margin-bottom: 15px;
+        }
+
+        .form-description {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <main aria-label="Página inicial do PrevisIA">
+        <h1>PrevisIA de Acessibilidade</h1>
+        <p class="form-description" id="form-description">Insira uma URL para prever a acessibilidade do site. Escolha entre análise rápida (instantânea, menos precisa) ou completa (lenta, mais precisa).</p>
+        <form action="/predict" method="post" aria-label="Formulário de análise de acessibilidade">
+            <label for="url_input" id="url_label">URL:</label>
+            <input type="url" id="url_input" name="url" placeholder="ex: univesp.br" required aria-required="true" aria-describedby="form-description">
+            <div class="opcoes">
+                <label for="tipo_analise" id="analise_label">Tipo de Análise:</label>
+                <select id="tipo_analise" name="tipo_analise" aria-labelledby="analise_label">
+                    <option value="rapida">Rápida (instantânea, menos precisa)</option>
+                    <option value="completa">Completa (lenta, mais precisa)</option>
+                </select>
+            </div>
+            <button type="submit" aria-label="Iniciar análise de acessibilidade">Analisar</button>
+        </form>
+    </main>
+</body>
+</html>
