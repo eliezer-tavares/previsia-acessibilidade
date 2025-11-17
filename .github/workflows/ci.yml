@@ -29,29 +29,30 @@ jobs:
         pip install black
         black --check .
 
-    - name: Run app test (check if starts)
+    - name: Run app test (check if starts) - BULLETPROOF VERSION
       run: |
-        # Inicia o app em background e salva a saída em um log
+        echo "Starting Flask app in background..."
         python app.py &> app.log &
         APP_PID=$!
-        echo "App started with PID $APP_PID"
-        
-        # Espera 30 segundos
+        echo "App started with PID $APP_PID. Waiting 30 seconds..."
         sleep 30
-        
-        echo "--- Checking server response ---"
-        # Tenta conectar e mostra o cabeçalho de resposta ou o erro
+
+        echo "--- Checking server response with curl ---"
+        # Usamos -f para falhar em erros HTTP, e guardamos o código de saída
         curl -f -v http://localhost:10000/
         CURL_EXIT_CODE=$?
+        echo "Curl finished with exit code: $CURL_EXIT_CODE"
 
-        echo "--- Displaying app.log (last 50 lines) ---"
-        # Mostra o log do app, que nos dirá se houve algum erro no Flask
-        tail -n 50 app.log
-        
-        # Para o processo do app
-        kill $APP_PID
-        
-        # Sai com o código de erro do curl se ele falhou
+        echo "--- Displaying full app.log for debugging ---"
+        # Usamos 'cat' para ver o log inteiro, não só o final
+        cat app.log
+
+        echo "--- Attempting to stop the application process ---"
+        # O comando 'kill' agora é à prova de falhas. 
+        # Se o processo já morreu, ele não vai quebrar o CI.
+        kill $APP_PID || echo "Process with PID $APP_PID was already gone. Ignoring error."
+
+        # O sucesso do passo depende APENAS do sucesso do curl.
         exit $CURL_EXIT_CODE
 
     - name: Run pytest (if tests added later)
