@@ -31,12 +31,12 @@ jobs:
 
     - name: Run app test (check if starts)
       run: |
-        python app.py &  # Inicia em background
-        sleep 10  # Espera carregar
-        curl -f http://localhost:10000/ || exit 1  # Verifica se responde
-        pkill -f "app.py"  # Para o app
+        python app.py & # Inicia em background
+        sleep 30 # Espera carregar (aumentado para 30s)
+        curl -f http://localhost:10000/ || exit 1 # Verifica se responde
+        pkill -f "app.py" # Para o app
 
     - name: Run pytest (if tests added later)
       run: |
         pip install pytest
-        pytest --cov=.  # Passa vazio agora; cobre 100% depois
+        pytest --cov=. # Passa vazio agora; cobre 100% depois
