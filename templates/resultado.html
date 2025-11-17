@@ -1,14 +1,13 @@
 <!-- Univesp - Projeto Integrador IV - Engenharia de Computação - 2º Semestre 2025 -->
-<!-- Desenvolvido por: Eliezer Tavares de Oliveira (principal), Anderson Vianna Ferrari, Efrain Tobal Tavares, Lucas de Goes Vieira Junior -->
+<!-- Desenvolvido por: Eliezer Tavares de Oliveira (principal), Anderson Viana Ferrari, Efrain Tobal Tavares, Lucas de Goes Vieira Junior -->
 <!-- EN: This template renders the analysis results. Why? To display accessibility score and guide accessibly. How? Uses HTML with ARIA and SpeechSynthesis. -->
 <!-- PT: Este template renderiza os resultados da análise. Por quê? Para exibir o escore de acessibilidade e guia de forma acessível. Como? Usa HTML com ARIA e SpeechSynthesis. -->
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ locale.replace('_', '-') }}" dir="ltr"> <!-- Dinâmico via context processor (pt-BR ou en-US) -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrevisIA - Resultado</title>
+    <title>{{ _('PrevisIA - Resultado') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,26 +16,22 @@
             margin: auto;
             background: #f5f5f5;
         }
-
         main {
             background: white;
             padding: 20px;
             border-radius: 8px;
             text-align: center;
         }
-
         .score {
             font-size: 2.5em;
             font-weight: bold;
             color: #0056b3;
             margin: 20px 0;
         }
-
         .url {
             word-break: break-all;
             margin-bottom: 15px;
         }
-
         .guia {
             text-align: left;
             margin: 20px 0;
@@ -44,7 +39,6 @@
             background: #e9ecef;
             border-radius: 4px;
         }
-
         button {
             background: #0056b3; /* Ajustado para maior contraste */
             color: white;
@@ -54,40 +48,64 @@
             cursor: pointer;
             margin-top: 20px;
         }
-
         button:focus, a:focus {
             outline: 2px solid #0056b3;
             outline-offset: 2px;
         }
-
         a {
             display: inline-block;
             margin-top: 20px;
             color: #0056b3;
             text-decoration: none;
         }
-
         ul {
             text-align: left;
             margin: 20px 0;
             padding-left: 20px;
         }
-
         .aviso {
             color: orange;
             font-weight: bold;
             margin-bottom: 15px;
         }
+        .lang-switcher {
+            text-align: right; /* Alinha à direita para não bagunçar o layout */
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        .lang-switcher label {
+            font-weight: normal;
+            margin-right: 10px;
+        }
+        .lang-switcher select {
+            width: auto; /* Menor que 100% para o seletor */
+            display: inline-block;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
-    <main aria-label="Resultados da análise de acessibilidade">
-        <h1>Resultado</h1>
-        <p class="url" id="url-description">URL: <strong>{{ url }}</strong></p>
-
+    <main aria-label="{{ _('Resultados da análise de acessibilidade') }}">
+        <!-- Seletor de Idioma (consistente com index.html) -->
+        <div class="lang-switcher" aria-label="{{ _('Seletor de idioma') }}">
+            <form action="{{ url_for('set_language') }}" method="POST" style="display: inline;">
+                <label for="language_select">{{ _('Idioma / Language') }}:</label>
+                <select name="language" id="language_select" aria-label="{{ _('Selecionar idioma') }}">
+                    <option value="pt_BR" {% if locale == 'pt_BR' %}selected{% endif %}>Português</option>
+                    <option value="en_US" {% if locale == 'en_US' %}selected{% endif %}>English</option>
+                </select>
+            </form>
+        </div>
+       
+        <h1>{{ _('Resultado') }}</h1>
+        <p class="url" id="url-description">{{ _('URL:') }} <strong>{{ url }}</strong></p>
         {% if error %}
         <div role="alert" aria-live="assertive">
-            <h2>Erro</h2>
+            <h2>{{ _('Erro') }}</h2>
             <p>{{ error }}</p>
         </div>
         {% else %}
@@ -95,35 +113,59 @@
         <p class="aviso" role="status" aria-live="polite">{{ aviso }}</p>
         {% endif %}
         <div id="resultado-texto" role="region" aria-live="assertive" aria-describedby="url-description">
-            <h2>Pontuação prevista</h2>
-            <p class="score" aria-label="Pontuação {{ score }} de 100">{{ score }}</p>
+            <h2>{{ _('Pontuação prevista') }}</h2>
+            <p class="score" aria-label="{{ _('Pontuação') }} {{ score }} {{ _('de 100') }}">{{ score }}</p>
         </div>
-        <div class="guia" aria-label="Guia de Navegação Preditivo">
-            <h2>Guia de Navegação Preditivo</h2>
+        <div class="guia" aria-label="{{ _('Guia de Navegação Preditivo') }}">
+            <h2>{{ _('Guia de Navegação Preditivo') }}</h2>
             <p>{{ guia }}</p>
         </div>
         {% if features %}
-        <div aria-label="Impactos principais">
-            <h2>Impactos Principais</h2>
+        <div aria-label="{{ _('Impactos principais') }}">
+            <h2>{{ _('Impactos Principais') }}</h2>
             <ul>
                 {% for key, value in features.items() %}
                 {% if key != 'layout' %}
-                <li>{{ key.replace('_', ' ')|title }}: {{ (value * 100)|round(2) if key in ['pct_links_genericos'] else value }}</li>
+                    {% set label = key.replace('_', ' ') | title %}
+                    {% if locale == 'en_US' %}
+                        {% if key == 'imagens_sem_alt' %}
+                            {% set label = 'Images Without Alt' %}
+                        {% elif key == 'pct_links_genericos' %}
+                            {% set label = 'Generic Links Percentage' %}
+                        {% elif key == 'lang_presente' %}
+                            {% set label = 'Language Present' %}
+                        {% elif key == 'erros_hierarquia' %}
+                            {% set label = 'Hierarchy Errors' %}
+                        {% elif key == 'inputs_sem_label' %}
+                            {% set label = 'Inputs Without Label' %}
+                        {% elif key == 'aria_presente' %}
+                            {% set label = 'ARIA Present' %}
+                        {% elif key == 'videos_sem_captions' %}
+                            {% set label = 'Videos Without Captions' %}
+                        {% elif key == 'falhas_contraste' %}
+                            {% set label = 'Contrast Failures' %}
+                        {% endif %}
+                    {% endif %}
+                    <li>{{ label }}: {{ (value * 100)|round(2) if key in ['pct_links_genericos'] else value }}</li>
                 {% endif %}
                 {% endfor %}
             </ul>
         </div>
         {% endif %}
-        <button id="play-audio" aria-label="Reproduzir resultado em áudio">Ouvir Resultado</button>
+        <button id="play-audio" aria-label="{{ _('Reproduzir resultado em áudio') }}">{{ _('Ouvir Resultado') }}</button>
         {% endif %}
-        <a href="/" aria-label="Realizar nova análise">Nova Análise</a>
+        <a href="/" aria-label="{{ _('Realizar nova análise') }}">{{ _('Nova Análise') }}</a>
     </main>
-
     <script>
+        // Auto-submit no change do seletor de idioma para UX fluida
+        document.getElementById('language_select').addEventListener('change', function() {
+            this.form.submit();
+        });
+       
         document.getElementById('play-audio').addEventListener('click', function () {
-            var texto = {% if error %}"Erro: {{ error | safe }}."{% else %}{% if aviso %}"Aviso: {{ aviso | safe }}. "{% endif %}"Pontuação prevista: {{ score }}. Guia de navegação: {{ guia | safe }}.{% if features %} Impactos principais: {% for key, value in features.items() %}{% if key != 'layout' %}{{ key.replace('_', ' ')|title }}: {{ (value * 100)|round(2) if key in ['pct_links_genericos'] else value }}. {% endif %}{% endfor %}{% endif %}"{% endif %};
+            var texto = {% if error %}"{{ _('Erro') }}: {{ error | safe }}."{% else %}{% if aviso %}"{{ _('Aviso') }}: {{ aviso | safe }}. "{% endif %}"{{ _('Pontuação prevista') }}: {{ score }}. {{ _('Guia de navegação') }}: {{ guia | safe }}.{% if features %}{{ _('Impactos principais') }}: {% for key, value in features.items() %}{% if key != 'layout' %}{% set label = key.replace('_', ' ') | title %}{% if locale == 'en_US' %}{% if key == 'imagens_sem_alt' %}{% set label = 'Images Without Alt' %}{% elif key == 'pct_links_genericos' %}{% set label = 'Generic Links Percentage' %}{% elif key == 'lang_presente' %}{% set label = 'Language Present' %}{% elif key == 'erros_hierarquia' %}{% set label = 'Hierarchy Errors' %}{% elif key == 'inputs_sem_label' %}{% set label = 'Inputs Without Label' %}{% elif key == 'aria_presente' %}{% set label = 'ARIA Present' %}{% elif key == 'videos_sem_captions' %}{% set label = 'Videos Without Captions' %}{% elif key == 'falhas_contraste' %}{% set label = 'Contrast Failures' %}{% endif %}{% endif %}{{ label }}: {{ (value * 100)|round(2) if key in ['pct_links_genericos'] else value }}. {% endif %}{% endfor %}{% endif %}"{% endif %};
             var utterance = new SpeechSynthesisUtterance(texto);
-            utterance.lang = 'pt-BR';
+            utterance.lang = '{{ locale.replace("_", "-") }}'; // Usa locale dinâmico, com hífen para BCP-47
             speechSynthesis.speak(utterance);
         });
     </script>

@@ -1,18 +1,38 @@
-# Python environment
-venv/
+# .gitignore para PrevisIA
+
+# Pastas de cache Python
 __pycache__/
-*.pyc
-.pytest_cache/
-erros_collector.log
+*.py[cod]
+*$py.class
 
-# Test files not ready
-tests/test_collector.py
-tests/test_orquestrador.py
-tests/test_prepare_urls.py
-tests/test_trainer.py
+# Ambiente virtual
+.venv/
+venv/
+env/
 
-# Other common exclusions
+# Cache do Tranco
+.tranco/
+
+# Pasta de testes
+tests/
+
+# Relatórios de cobertura de testes
+.coverage
+htmlcov/
+*.pot  # Arquivos POT do Babel (ex: messages.pot)
+
+# Logs
 *.log
-*.DS_Store
-.env
-*.sqlite3
+
+# Arquivos temporários
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos do sistema
+*.tmp

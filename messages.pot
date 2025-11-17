@@ -1,0 +1,265 @@
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-11-12 19:31-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app.py:98
+#, python-brace-format
+msgid ""
+"Análise da página {0} de {1}. Pontuação prevista: {2}. Guia rápido e "
+"alertas: "
+msgstr ""
+
+#: app.py:103
+msgid "A página começa com um cabeçalho, "
+msgstr ""
+
+#: app.py:105
+#, python-brace-format
+msgid "seguido por um menu de navegação com {0} item."
+msgstr ""
+
+#: app.py:107
+msgid "Cuidado: muitos links genéricos no menu podem confundir a navegação. "
+msgstr ""
+
+#: app.py:109
+#, python-brace-format
+msgid "Em seguida, há uma galeria ou carrossel com {0} imagem."
+msgstr ""
+
+#: app.py:111
+#, python-brace-format
+msgid "Alerta: {0} imagem sem descrição; seu leitor de tela pode ignorá-la."
+msgstr ""
+
+#: app.py:113
+msgid "A área de conteúdo principal segue, "
+msgstr ""
+
+#: app.py:115
+#, python-brace-format
+msgid ""
+"mas com {0} erro de hierarquia em títulos, o que pode bagunçar a "
+"navegação por seções."
+msgstr ""
+
+#: app.py:117
+#, python-brace-format
+msgid "há um formulário com {0} campo no meio ou final da página."
+msgstr ""
+
+#: app.py:119
+#, python-brace-format
+msgid "Alerta: {0} campo sem rótulo adequado; formulários podem ser difíceis."
+msgstr ""
+
+#: app.py:121
+msgid "Todos os campos parecem rotulados corretamente. "
+msgstr ""
+
+#: app.py:123
+msgid "A página termina com um rodapé. "
+msgstr ""
+
+#: app.py:126
+#, python-brace-format
+msgid ""
+"Alerta: {0} imagem sem texto alternativo pode dificultar a navegação para"
+" leitores de tela."
+msgstr ""
+
+#: app.py:128
+#, python-brace-format
+msgid "Alerta: {0} vídeo sem legenda; áudio pode ser inacessível."
+msgstr ""
+
+#: app.py:130
+#, python-brace-format
+msgid ""
+"Alerta: {0} problema de contraste detectado, afetando legibilidade para "
+"baixa visão."
+msgstr ""
+
+#: app.py:132
+msgid ""
+"Alerta: Falta de ARIA em elementos dinâmicos; interações podem não ser "
+"anunciadas. "
+msgstr ""
+
+#: app.py:135
+msgid "A navegação deve ser direta e acessível."
+msgstr ""
+
+#: app.py:137
+msgid "A navegação é razoável, mas evite seções problemáticas."
+msgstr ""
+
+#: app.py:139
+msgid ""
+"Sugiro usar ferramentas alternativas como busca do site para evitar "
+"frustrações."
+msgstr ""
+
+#: app.py:160
+msgid ""
+"Modelo ou seus componentes não estão disponíveis. Verifique a "
+"configuração do servidor."
+msgstr ""
+
+#: app.py:174
+#, python-brace-format
+msgid "A análise completa falhou; usamos a análise rápida como fallback para {0}."
+msgstr ""
+
+#: app.py:179
+#, python-brace-format
+msgid "Falha ao extrair características da URL: {0}"
+msgstr ""
+
+#: app.py:221
+#, python-brace-format
+msgid "Ocorreu um erro inesperado during the analysis: {0}"
+msgstr ""
+
+#: templates/index.html:10
+msgid "PrevisIA - Acessibilidade"
+msgstr ""
+
+#: templates/index.html:81
+msgid "Página inicial do PrevisIA"
+msgstr ""
+
+#: templates/index.html:83 templates/resultado.html:94
+msgid "Seletor de idioma"
+msgstr ""
+
+#: templates/index.html:85 templates/resultado.html:96
+msgid "Idioma / Language"
+msgstr ""
+
+#: templates/index.html:86 templates/resultado.html:97
+msgid "Selecionar idioma"
+msgstr ""
+
+#: templates/index.html:93
+msgid "PrevisIA de Acessibilidade"
+msgstr ""
+
+#: templates/index.html:94
+msgid ""
+"Insira uma URL para prever a acessibilidade do site. Escolha entre "
+"análise rápida (instantânea, menos precisa) ou completa (lenta, mais "
+"precisa."
+msgstr ""
+
+#: templates/index.html:95
+msgid "Formulário de análise de acessibilidade"
+msgstr ""
+
+#: templates/index.html:96 templates/resultado.html:105
+msgid "URL:"
+msgstr ""
+
+#: templates/index.html:97
+msgid "ex: univesp.br"
+msgstr ""
+
+#: templates/index.html:99
+msgid "Tipo de Análise:"
+msgstr ""
+
+#: templates/index.html:101
+msgid "Rápida (instantânea, menos precisa)"
+msgstr ""
+
+#: templates/index.html:102
+msgid "Completa (lenta, mais precisa)"
+msgstr ""
+
+#: templates/index.html:105
+msgid "Iniciar análise de acessibilidade"
+msgstr ""
+
+#: templates/index.html:105
+msgid "Analisar"
+msgstr ""
+
+#: templates/resultado.html:10
+msgid "PrevisIA - Resultado"
+msgstr ""
+
+#: templates/resultado.html:92
+msgid "Resultados da análise de acessibilidade"
+msgstr ""
+
+#: templates/resultado.html:104
+msgid "Resultado"
+msgstr ""
+
+#: templates/resultado.html:108 templates/resultado.html:146
+msgid "Erro"
+msgstr ""
+
+#: templates/resultado.html:116 templates/resultado.html:146
+msgid "Pontuação prevista"
+msgstr ""
+
+#: templates/resultado.html:117
+msgid "Pontuação"
+msgstr ""
+
+#: templates/resultado.html:117
+msgid "de 100"
+msgstr ""
+
+#: templates/resultado.html:119 templates/resultado.html:120
+msgid "Guia de Navegação Preditivo"
+msgstr ""
+
+#: templates/resultado.html:124 templates/resultado.html:146
+msgid "Impactos principais"
+msgstr ""
+
+#: templates/resultado.html:125
+msgid "Impactos Principais"
+msgstr ""
+
+#: templates/resultado.html:135
+msgid "Reproduzir resultado em áudio"
+msgstr ""
+
+#: templates/resultado.html:135
+msgid "Ouvir Resultado"
+msgstr ""
+
+#: templates/resultado.html:137
+msgid "Realizar nova análise"
+msgstr ""
+
+#: templates/resultado.html:137
+msgid "Nova Análise"
+msgstr ""
+
+#: templates/resultado.html:146
+msgid "Aviso"
+msgstr ""
+
+#: templates/resultado.html:146
+msgid "Guia de navegação"
+msgstr ""
+

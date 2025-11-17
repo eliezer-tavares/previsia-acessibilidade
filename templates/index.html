@@ -2,13 +2,12 @@
 <!-- Desenvolvido por: Eliezer Tavares de Oliveira (principal), Anderson Vianna Ferrari, Efrain Tobal Tavares, Lucas de Goes Vieira Junior -->
 <!-- EN: This template renders the web interface for URL input. Why? To provide an accessible form for users. How? Uses HTML with ARIA attributes. -->
 <!-- PT: Este template renderiza a interface web para entrada de URL. Por quê? Para fornecer um formulário acessível aos usuários. Como? Usa HTML com atributos ARIA. -->
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ locale.replace('_', '-') }}" dir="ltr"> <!-- Dinâmico via context processor (pt-BR ou en-US) -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrevisIA - Acessibilidade</title>
+    <title>{{ _('PrevisIA - Acessibilidade') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,19 +16,16 @@
             margin: auto;
             background: #f5f5f5;
         }
-
         main {
             background: white;
             padding: 20px;
             border-radius: 8px;
         }
-
         label {
             font-weight: bold;
             display: block;
             margin-bottom: 10px;
         }
-
         input[type="url"] {
             width: 100%;
             padding: 10px;
@@ -37,7 +33,6 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
         select {
             padding: 10px;
             margin-bottom: 15px;
@@ -45,7 +40,6 @@
             border-radius: 4px;
             width: 100%;
         }
-
         button {
             background: #0056b3; /* Ajustado para maior contraste */
             color: white;
@@ -54,39 +48,69 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
         button:focus,
         input:focus,
         select:focus {
             outline: 2px solid #0056b3;
             outline-offset: 2px;
         }
-
         .opcoes {
             margin-bottom: 15px;
         }
-
         .form-description {
             margin-bottom: 15px;
+        }
+        .lang-switcher {
+            text-align: right; /* Alinha à direita para não bagunçar o layout */
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        .lang-switcher label {
+            font-weight: normal;
+            margin-right: 10px;
+        }
+        .lang-switcher select {
+            width: auto; /* Menor que 100% para o seletor */
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-    <main aria-label="Página inicial do PrevisIA">
-        <h1>PrevisIA de Acessibilidade</h1>
-        <p class="form-description" id="form-description">Insira uma URL para prever a acessibilidade do site. Escolha entre análise rápida (instantânea, menos precisa) ou completa (lenta, mais precisa).</p>
-        <form action="/predict" method="post" aria-label="Formulário de análise de acessibilidade">
-            <label for="url_input" id="url_label">URL:</label>
-            <input type="url" id="url_input" name="url" placeholder="ex: univesp.br" required aria-required="true" aria-describedby="form-description">
+    <main aria-label="{{ _('Página inicial do PrevisIA') }}">
+        <!-- Seletor de Idioma -->
+        <div class="lang-switcher" aria-label="{{ _('Seletor de idioma') }}">
+            <form action="{{ url_for('set_language') }}" method="POST" style="display: inline;">
+                <label for="language_select">{{ _('Idioma / Language') }}:</label>
+                <select name="language" id="language_select" aria-label="{{ _('Selecionar idioma') }}">
+                    <option value="pt_BR" {% if g.locale == 'pt_BR' %}selected{% endif %}>Português</option>
+                    <option value="en_US" {% if g.locale == 'en_US' %}selected{% endif %}>English</option>
+                </select>
+            </form>
+        </div>
+       
+        <h1>{{ _('PrevisIA de Acessibilidade') }}</h1>
+        <p class="form-description" id="form-description">{{ _('Insira uma URL para prever a acessibilidade do site. Escolha entre análise rápida (instantânea, menos precisa) ou completa (lenta, mais precisa.') }}</p>
+        <form action="/predict" method="post" aria-label="{{ _('Formulário de análise de acessibilidade') }}">
+            <label for="url_input" id="url_label">{{ _('URL:') }}</label>
+            <input type="url" id="url_input" name="url" placeholder="{{ _('ex: http://www.univesp.br') }}" required aria-required="true" aria-describedby="form-description">
             <div class="opcoes">
-                <label for="tipo_analise" id="analise_label">Tipo de Análise:</label>
+                <label for="tipo_analise" id="analise_label">{{ _('Tipo de Análise:') }}</label>
                 <select id="tipo_analise" name="tipo_analise" aria-labelledby="analise_label">
-                    <option value="rapida">Rápida (instantânea, menos precisa)</option>
-                    <option value="completa">Completa (lenta, mais precisa)</option>
+                    <option value="rapida">{{ _('Rápida (instantânea, menos precisa)') }}</option>
+                    <option value="completa">{{ _('Completa (lenta, mais precisa)') }}</option>
                 </select>
             </div>
-            <button type="submit" aria-label="Iniciar análise de acessibilidade">Analisar</button>
+            <button type="submit" aria-label="{{ _('Iniciar análise de acessibilidade') }}">{{ _('Analisar') }}</button>
         </form>
     </main>
+   
+    <script>
+        // Auto-submit no change do seletor de idioma para UX fluida
+        document.getElementById('language_select').addEventListener('change', function() {
+            this.form.submit();
+        });
+    </script>
 </body>
 </html>

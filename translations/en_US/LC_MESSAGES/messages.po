@@ -1,0 +1,252 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PrevisIA 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-12 19:31-0300\n"
+"PO-Revision-Date: 2025-11-13 19:31-0300\n"
+"Last-Translator: Eliezer\n"
+"Language: en_US\n"
+"Language-Team: Univesp\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app.py:98
+#, python-brace-format
+msgid "Análise da página {0} de {1}. Pontuação prevista: {2}. Guia rápido e alertas: "
+msgstr "Analysis of the page {0} from {1}. Predicted score: {2}. Quick guide and alerts: "
+
+#: app.py:103
+msgid "A página começa com um cabeçalho, "
+msgstr "The page starts with a header, "
+
+#: app.py:105
+msgid "seguido por um menu de navegação com {0} item."
+msgid_plural "seguido por um menu de navegação com {0} itens."
+msgstr[0] "followed by a navigation menu with {0} item."
+msgstr[1] "followed by a navigation menu with {0} items."
+
+#: app.py:107
+msgid "Cuidado: muitos links genéricos no menu podem confundir a navegação. "
+msgstr "Caution: many generic links in the menu can confuse navigation. "
+
+#: app.py:109
+msgid "Em seguida, há uma galeria ou carrossel com {0} imagem."
+msgid_plural "Em seguida, há uma galeria ou carrossel com {0} imagens."
+msgstr[0] "Next, there is a gallery or carousel with {0} image."
+msgstr[1] "Next, there is a gallery or carousel with {0} images."
+
+#: app.py:111
+msgid "Alerta: {0} imagem sem descrição; seu leitor de tela pode ignorá-la."
+msgid_plural "Alerta: {0} imagens sem descrição; seu leitor de tela pode ignorá-las."
+msgstr[0] "Alert: {0} image without description; your screen reader may skip it."
+msgstr[1] "Alert: {0} images without description; your screen reader may skip them."
+
+#: app.py:113
+msgid "A área de conteúdo principal segue, "
+msgstr "The main content area follows, "
+
+#: app.py:115
+msgid "mas com {0} erro de hierarquia em títulos, o que pode bagunçar a navegação por seções."
+msgid_plural "mas com {0} erros de hierarquia em títulos, o que pode bagunçar a navegação por seções."
+msgstr[0] "but with {0} hierarchy error in titles, which may mess up section navigation."
+msgstr[1] "but with {0} hierarchy errors in titles, which may mess up section navigation."
+
+#: app.py:117
+msgid "há um formulário com {0} campo no meio ou final da página."
+msgid_plural "há um formulário com {0} campos no meio ou final da página."
+msgstr[0] "there is a form with {0} field in the middle or end of the page."
+msgstr[1] "there is a form with {0} fields in the middle or end of the page."
+
+#: app.py:119
+msgid "Alerta: {0} campo sem rótulo adequado; formulários podem ser difíceis."
+msgid_plural "Alerta: {0} campos sem rótulos adequados; formulários podem ser difíceis."
+msgstr[0] "Alert: {0} field without proper label; forms may be difficult."
+msgstr[1] "Alert: {0} fields without proper labels; forms may be difficult."
+
+#: app.py:121
+msgid "Todos os campos parecem rotulados corretamente. "
+msgstr "All fields seem properly labeled. "
+
+#: app.py:123
+msgid "A página termina com um rodapé. "
+msgstr "The page ends with a footer. "
+
+#: app.py:126
+msgid "Alerta: {0} imagem sem texto alternativo pode dificultar a navegação para leitores de tela."
+msgid_plural "Alerta: {0} imagens sem texto alternativo podem dificultar a navegação para leitores de tela."
+msgstr[0] "Alert: {0} image without alternative text can hinder navigation for screen readers."
+msgstr[1] "Alert: {0} images without alternative text can hinder navigation for screen readers."
+
+#: app.py:128
+msgid "Alerta: {0} vídeo sem legenda; áudio pode ser inacessível."
+msgid_plural "Alerta: {0} vídeos sem legendas; áudio pode ser inacessível."
+msgstr[0] "Alert: {0} video without captions; audio may be inaccessible."
+msgstr[1] "Alert: {0} videos without captions; audio may be inaccessible."
+
+#: app.py:130
+msgid "Alerta: {0} problema de contraste detectado, afetando legibilidade para baixa visão."
+msgid_plural "Alerta: {0} problemas de contraste detectados, afetando legibilidade para baixa visão."
+msgstr[0] "Alert: {0} contrast problem detected, affecting readability for low vision."
+msgstr[1] "Alert: {0} contrast problems detected, affecting readability for low vision."
+
+#: app.py:132
+msgid "Alerta: Falta de ARIA em elementos dinâmicos; interações podem não ser anunciadas. "
+msgstr "Alert: Lack of ARIA in dynamic elements; interactions may not be announced. "
+
+#: app.py:135
+msgid "A navegação deve ser direta e acessível."
+msgstr "Navigation should be direct and accessible."
+
+#: app.py:137
+msgid "A navegação é razoável, mas evite seções problemáticas."
+msgstr "Navigation is reasonable, but avoid problematic sections."
+
+#: app.py:139
+msgid "Sugiro usar ferramentas alternativas como busca do site para evitar frustrações."
+msgstr "I suggest using alternative tools like site search to avoid frustrations."
+
+#: app.py:160
+msgid "Modelo ou seus componentes não estão disponíveis. Verifique a configuração do servidor."
+msgstr "Model or its components are not available. Check the server configuration."
+
+#: app.py:174
+#, python-brace-format
+msgid "A análise completa falhou; usamos a análise rápida como fallback para {0}."
+msgstr "The complete analysis failed; we used the quick analysis as fallback for {0}."
+
+#: app.py:179
+#, python-brace-format
+msgid "Falha ao extrair características da URL: {0}"
+msgstr "Failed to extract features from URL: {0}"
+
+#: app.py:221
+#, python-brace-format
+msgid "Ocorreu um erro inesperado during the analysis: {0}"
+msgstr "An unexpected error occurred during the analysis: {0}"
+
+#: templates/index.html:10
+msgid "PrevisIA - Acessibilidade"
+msgstr "PrevisIA - Accessibility"
+
+#: templates/index.html:81
+msgid "Página inicial do PrevisIA"
+msgstr "PrevisIA Home Page"
+
+#: templates/index.html:83 templates/resultado.html:94
+msgid "Seletor de idioma"
+msgstr "Language Selector"
+
+#: templates/index.html:85 templates/resultado.html:96
+msgid "Idioma / Language"
+msgstr "Language / Idioma"
+
+#: templates/index.html:86 templates/resultado.html:97
+msgid "Selecionar idioma"
+msgstr "Select Language"
+
+#: templates/index.html:93
+msgid "PrevisIA de Acessibilidade"
+msgstr "PrevisIA Accessibility"
+
+#: templates/index.html:94
+msgid "Insira uma URL para prever a acessibilidade do site. Escolha entre análise rápida (instantânea, menos precisa) ou completa (lenta, mais precisa."
+msgstr "Enter a URL to predict the site's accessibility. Choose between quick analysis (instant, less accurate) or complete (slow, more accurate)."
+
+#: templates/index.html:95
+msgid "Formulário de análise de acessibilidade"
+msgstr "Accessibility Analysis Form"
+
+#: templates/index.html:96 templates/resultado.html:105
+msgid "URL:"
+msgstr "URL:"
+
+#: templates/index.html:97
+msgid "ex: univesp.br"
+msgstr "e.g.: univesp.br"
+
+#: templates/index.html:99
+msgid "Tipo de Análise:"
+msgstr "Type of Analysis:"
+
+#: templates/index.html:101
+msgid "Rápida (instantânea, menos precisa)"
+msgstr "Quick (instant, less accurate)"
+
+#: templates/index.html:102
+msgid "Completa (lenta, mais precisa)"
+msgstr "Complete (slow, more accurate)"
+
+#: templates/index.html:105
+msgid "Iniciar análise de acessibilidade"
+msgstr "Start accessibility analysis"
+
+#: templates/index.html:105
+msgid "Analisar"
+msgstr "Analyze"
+
+#: templates/resultado.html:10
+msgid "PrevisIA - Resultado"
+msgstr "PrevisIA - Result"
+
+#: templates/resultado.html:92
+msgid "Resultados da análise de acessibilidade"
+msgstr "Accessibility Analysis Results"
+
+#: templates/resultado.html:104
+msgid "Resultado"
+msgstr "Result"
+
+#: templates/resultado.html:108 templates/resultado.html:146
+msgid "Erro"
+msgstr "Error"
+
+#: templates/resultado.html:116 templates/resultado.html:146
+msgid "Pontuação prevista"
+msgstr "Predicted Score"
+
+#: templates/resultado.html:117
+msgid "Pontuação"
+msgstr "Score"
+
+#: templates/resultado.html:117
+msgid "de 100"
+msgstr "out of 100"
+
+#: templates/resultado.html:119 templates/resultado.html:120
+msgid "Guia de Navegação Preditivo"
+msgstr "Predictive Navigation Guide"
+
+#: templates/resultado.html:124 templates/resultado.html:146
+msgid "Impactos principais"
+msgstr "Main Impacts"
+
+#: templates/resultado.html:125
+msgid "Impactos Principais"
+msgstr "Main Impacts"
+
+#: templates/resultado.html:135
+msgid "Reproduzir resultado em áudio"
+msgstr "Play result in audio"
+
+#: templates/resultado.html:135
+msgid "Ouvir Resultado"
+msgstr "Listen to Result"
+
+#: templates/resultado.html:137
+msgid "Realizar nova análise"
+msgstr "Perform new analysis"
+
+#: templates/resultado.html:137
+msgid "Nova Análise"
+msgstr "New Analysis"
+
+#: templates/resultado.html:146
+msgid "Aviso"
+msgstr "Warning"
+
+#: templates/resultado.html:146
+msgid "Guia de navegação"
+msgstr "Navigation Guide"
