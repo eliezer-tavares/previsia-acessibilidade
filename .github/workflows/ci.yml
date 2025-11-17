@@ -24,19 +24,37 @@ jobs:
         pip install -r requirements.txt
         playwright install --with-deps
 
-    - name: Lint code (black)
+    - name: Lint code (check formatting with black)
       run: |
         pip install black
         black --check .
 
     - name: Run app test (check if starts)
       run: |
-        python app.py & # Inicia em background
-        sleep 30 # Espera carregar (aumentado para 30s)
-        curl -f http://localhost:10000/ || exit 1 # Verifica se responde
-        pkill -f "app.py" # Para o app
+        # Inicia o app em background e salva a saída em um log
+        python app.py &> app.log &
+        APP_PID=$!
+        echo "App started with PID $APP_PID"
+        
+        # Espera 30 segundos
+        sleep 30
+        
+        echo "--- Checking server response ---"
+        # Tenta conectar e mostra o cabeçalho de resposta ou o erro
+        curl -f -v http://localhost:10000/
+        CURL_EXIT_CODE=$?
+
+        echo "--- Displaying app.log (last 50 lines) ---"
+        # Mostra o log do app, que nos dirá se houve algum erro no Flask
+        tail -n 50 app.log
+        
+        # Para o processo do app
+        kill $APP_PID
+        
+        # Sai com o código de erro do curl se ele falhou
+        exit $CURL_EXIT_CODE
 
     - name: Run pytest (if tests added later)
       run: |
         pip install pytest
-        pytest --cov=. # Passa vazio agora; cobre 100% depois
+        pytest
